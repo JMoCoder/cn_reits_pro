@@ -1,0 +1,387 @@
+[
+  {
+    "name": "平安广州交投广河高速公路REIT",
+    "sector": "交通基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "华夏越秀高速公路REIT",
+    "sector": "交通基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "招商基金公路高速公路REIT",
+    "sector": "交通基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "华夏中国交建高速REIT",
+    "sector": "交通基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "中金山高集团高速REIT",
+    "sector": "交通基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "国金中国铁建高速REIT",
+    "sector": "交通基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "中金安徽交控REIT",
+    "sector": "交通基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "华夏南京交通高速REIT",
+    "sector": "交通基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "浙商证券沪杭甬高速REIT",
+    "sector": "交通基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "华泰紫金江苏交控高速REIT",
+    "sector": "交通基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "工银河北高速集团高速REIT",
+    "sector": "交通基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "易方达深高速REIT",
+    "sector": "交通基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "平安宁波交投杭州湾跨海大桥REIT",
+    "sector": "交通基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "华夏特变电工新能源REIT",
+    "sector": "能源基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "中航京能光伏REIT",
+    "sector": "能源基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "嘉实中国电建清洁能源REIT",
+    "sector": "能源基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "鹏华深圳能源REIT",
+    "sector": "能源基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "中信建投国家电投新能源REIT",
+    "sector": "能源基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "工银蒙能清洁能源REIT",
+    "sector": "能源基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "中信建投明阳智能新能源REIT",
+    "sector": "能源基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "华夏华电清洁能源REIT",
+    "sector": "能源基础设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "国泰君安济南能源供热REIT",
+    "sector": "市政设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "富国首创水务REIT",
+    "sector": "生态环保",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "中航首钢绿能REIT",
+    "sector": "生态环保",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "银华绍兴原水水利REIT",
+    "sector": "水利设施",
+    "assetType": "特许经营权"
+  },
+  {
+    "name": "红土创新盐田港仓储物流REIT",
+    "sector": "仓储物流",
+    "assetType": "产权类"
+  },
+  {
+    "name": "华夏深国际仓储物流REIT",
+    "sector": "仓储物流",
+    "assetType": "产权类"
+  },
+  {
+    "name": "华安外高桥仓储物流REIT",
+    "sector": "仓储物流",
+    "assetType": "产权类"
+  },
+  {
+    "name": "中金普洛斯仓储物流REIT",
+    "sector": "仓储物流",
+    "assetType": "产权类"
+  },
+  {
+    "name": "中航易商仓储物流REIT",
+    "sector": "仓储物流",
+    "assetType": "产权类"
+  },
+  {
+    "name": "南方顺丰物流REIT",
+    "sector": "仓储物流",
+    "assetType": "产权类"
+  },
+  {
+    "name": "嘉实京东仓储物流REIT",
+    "sector": "仓储物流",
+    "assetType": "产权类"
+  },
+  {
+    "name": "中银中外运仓储物流REIT",
+    "sector": "仓储物流",
+    "assetType": "产权类"
+  },
+  {
+    "name": "华泰紫金宝湾物流仓储REIT",
+    "sector": "仓储物流",
+    "assetType": "产权类"
+  },
+  {
+    "name": "汇添富九州通医药仓储物流REIT",
+    "sector": "仓储物流",
+    "assetType": "产权类"
+  },
+  {
+    "name": "博时招商蛇口产业园REIT",
+    "sector": "园区基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "华夏合肥高新产园REIT",
+    "sector": "园区基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "华夏杭州和达高科产园REIT",
+    "sector": "园区基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "易方达广州开发区高新产业园REIT",
+    "sector": "园区基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "广发成都高投产业园REIT",
+    "sector": "园区基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "中金重庆两江产业园REIT",
+    "sector": "园区基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "中金联东科技创新产业园REIT",
+    "sector": "园区基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "华安张江产业园REIT",
+    "sector": "园区基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "中金湖北科投光谷产业园REIT",
+    "sector": "园区基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "国泰君安临港创新产业园REIT",
+    "sector": "园区基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "博时津开科工产业园REIT",
+    "sector": "园区基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "东吴苏州工业园区产业园REIT",
+    "sector": "园区基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "建信中关村产业园REIT",
+    "sector": "园区基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "国泰君安东久新经济REIT",
+    "sector": "园区基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "华泰紫金南京建邺产业园REIT",
+    "sector": "园区基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "中金亦庄产业园REIT",
+    "sector": "园区基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "创金合信首农REIT",
+    "sector": "园区基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "招商科创孵化器REIT",
+    "sector": "园区基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "华夏金隅智造工场REIT",
+    "sector": "园区基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "中信建投沈阳国际软件园REIT",
+    "sector": "园区基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "南方万国数据中心REIT",
+    "sector": "新型基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "南方润泽科技数据中心REIT",
+    "sector": "新型基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "红土创新深圳人才安居REIT",
+    "sector": "租赁住房",
+    "assetType": "产权类"
+  },
+  {
+    "name": "招商基金蛇口租赁住房REIT",
+    "sector": "租赁住房",
+    "assetType": "产权类"
+  },
+  {
+    "name": "国泰君安城投宽庭保障房REIT",
+    "sector": "租赁住房",
+    "assetType": "产权类"
+  },
+  {
+    "name": "汇添富上海地产租赁住房REIT",
+    "sector": "租赁住房",
+    "assetType": "产权类"
+  },
+  {
+    "name": "中金厦门安居保障房REIT",
+    "sector": "租赁住房",
+    "assetType": "产权类"
+  },
+  {
+    "name": "华夏北京保障房REIT",
+    "sector": "租赁住房",
+    "assetType": "产权类"
+  },
+  {
+    "name": "华夏基金华润有巢REIT",
+    "sector": "租赁住房",
+    "assetType": "产权类"
+  },
+  {
+    "name": "华泰紫金苏州恒泰租赁住房REIT",
+    "sector": "租赁住房",
+    "assetType": "产权类"
+  },
+  {
+    "name": "华夏华润商业REIT",
+    "sector": "消费基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "中金印力消费REIT",
+    "sector": "消费基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "华夏大悦城商业REIT",
+    "sector": "消费基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "华夏金茂商业REIT",
+    "sector": "消费基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "华夏凯德商业REIT",
+    "sector": "消费基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "华夏中海商业REIT",
+    "sector": "消费基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "中金中国绿发商业REIT",
+    "sector": "消费基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "华夏首创奥特莱斯REIT",
+    "sector": "消费基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "中金唯品会奥莱REIT",
+    "sector": "消费基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "易方达华威农贸市场REIT",
+    "sector": "消费基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "华安百联消费REIT",
+    "sector": "消费基础设施",
+    "assetType": "产权类"
+  },
+  {
+    "name": "嘉实物美消费REIT",
+    "sector": "消费基础设施",
+    "assetType": "产权类"
+  }
+]

@@ -12,7 +12,11 @@ export interface ReitData {
   
   // Price Data
   prevClose: number;
+  open: number;
+  high: number;
+  low: number;
   currentPrice: number;
+  change: number; // Price Change Amount
   changePercent: number; // Daily change
   
   // Volume/Turnover

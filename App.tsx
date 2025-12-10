@@ -9,7 +9,7 @@ function App() {
   const [filteredData, setFilteredData] = useState<ReitData[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSector, setSelectedSector] = useState<string>('All');
-  const [sortConfig, setSortConfig] = useState<SortConfig>({ field: 'changePercent', direction: 'desc' });
+  const [sortConfig, setSortConfig] = useState<SortConfig>({ field: 'name', direction: 'asc' });
   
   // App State
   const [isLoading, setIsLoading] = useState(true);

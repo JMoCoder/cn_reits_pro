@@ -1,7 +1,90 @@
 import { ReitData, AssetType, TushareDailyQuote } from '../types';
 import { getLatestTradingDate, fetchREITsList, fetchDailyQuotes } from './tushare';
+import reitMeta from './reit_meta.json';
 
 // --- HELPERS ---
+
+const isSubsequence = (s: string, t: string): boolean => {
+  let i = 0, j = 0;
+  while (i < s.length && j < t.length) {
+      if (s[i] === t[j]) {
+          i++;
+      }
+      j++;
+  }
+  return i === s.length;
+};
+
+const getSimilarity = (s: string, t: string): number => {
+  const setS = new Set(s.split(''));
+  const setT = new Set(t.split(''));
+  let intersection = 0;
+  setS.forEach(char => {
+      if (setT.has(char)) intersection++;
+  });
+  // Jaccard-like or Overlap coefficient
+  // Using overlap coefficient relative to the shorter string to handle abbreviations
+  const minLen = Math.min(s.length, t.length);
+  if (minLen === 0) return 0;
+  return intersection / minLen;
+};
+
+const findMeta = (tushareName: string): { sector: string, assetType: AssetType } => {
+  // Strategy: 
+  // 1. Exact/Includes match
+  // 2. Subsequence match (Tushare name is a subsequence of Excel name)
+  // 3. Similarity match (Character overlap > 70%)
+  
+  const cleanTsName = tushareName.replace(/REIT/i, '').trim();
+  
+  // 1. Exact / Includes
+  let match = reitMeta.find(meta => {
+      const cleanMetaName = meta.name.replace(/REIT/i, '').trim();
+      return cleanMetaName.includes(cleanTsName) || cleanTsName.includes(cleanMetaName);
+  });
+
+  // 2. Subsequence
+  if (!match) {
+      match = reitMeta.find(meta => {
+          const cleanMetaName = meta.name.replace(/REIT/i, '').trim();
+          return isSubsequence(cleanTsName, cleanMetaName);
+      });
+  }
+
+  // 3. Similarity Fallback (for complex mismatches like "山东高速" vs "山高")
+  if (!match) {
+      let bestScore = 0;
+      let bestMatch = null;
+      
+      reitMeta.forEach(meta => {
+          const cleanMetaName = meta.name.replace(/REIT/i, '').trim();
+          const score = getSimilarity(cleanTsName, cleanMetaName);
+          if (score > bestScore) {
+              bestScore = score;
+              bestMatch = meta;
+          }
+      });
+      
+      // Threshold: 0.7 (70% overlap)
+      if (bestScore > 0.7 && bestMatch) {
+          match = bestMatch;
+          // console.debug(`[Fuzzy Match] ${tushareName} ~= ${match.name} (Score: ${bestScore.toFixed(2)})`);
+      }
+  }
+
+  if (match) {
+      return {
+          sector: match.sector,
+          assetType: match.assetType === '产权类' ? AssetType.PROPERTY : AssetType.FRANCHISE
+      };
+  }
+
+  // Fallback: If not matched, DO NOT guess. Use placeholder to ensure rigor.
+  return {
+      sector: '未分类',
+      assetType: AssetType.FRANCHISE // Default fallback, but sector marks it as unclassified
+  };
+};
 
 const guessSector = (name: string): string => {
   if (name.includes('能源') || name.includes('光伏') || name.includes('风电') || name.includes('电投') || name.includes('京能') || name.includes('龙源')) return '能源';
@@ -33,8 +116,8 @@ export const loadReitList = async (): Promise<ReitData[]> => {
     }
 
     return reits.map((fund, index) => {
-      const sector = guessSector(fund.name);
-      const assetType = getAssetType(sector);
+      // Use Metadata Matcher
+      const { sector, assetType } = findMeta(fund.name);
 
       return {
         id: index + 1,
@@ -43,7 +126,11 @@ export const loadReitList = async (): Promise<ReitData[]> => {
         sector,
         assetType,
         prevClose: 0,
+        open: 0,
+        high: 0,
+        low: 0,
         currentPrice: 0,
+        change: 0,
         changePercent: 0,
         volume: 0,
         amount: 0
@@ -136,7 +223,11 @@ export const loadReitPrices = async (currentData: ReitData[]): Promise<{data: Re
       return {
         ...item,
         prevClose: quote.pre_close,
+        open: quote.open,
+        high: quote.high,
+        low: quote.low,
         currentPrice: quote.close,
+        change: quote.change,
         changePercent: quote.pct_chg / 100,
         volume: quote.vol,
         amount: quote.amount

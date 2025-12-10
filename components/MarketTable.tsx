@@ -79,7 +79,13 @@ export const MarketTable: React.FC<MarketTableProps> = ({ data, sortConfig, onSo
       const valA = a[sortConfig.field];
       const valB = b[sortConfig.field];
       
-      // Treat 0 or null as smallest for sort
+      // String sorting (Sector, Name, AssetType) - Use Chinese Pinyin Locale Compare
+      if (typeof valA === 'string' && typeof valB === 'string') {
+          const comparison = valA.localeCompare(valB, 'zh-CN');
+          return sortConfig.direction === 'asc' ? comparison : -comparison;
+      }
+      
+      // Numeric sorting (Price, Change, Volume, Amount)
       const numA = (typeof valA === 'number') ? valA : -Infinity;
       const numB = (typeof valB === 'number') ? valB : -Infinity;
 
@@ -100,9 +106,9 @@ export const MarketTable: React.FC<MarketTableProps> = ({ data, sortConfig, onSo
         <thead className="sticky top-0 z-30 bg-market-bg shadow-md h-12">
           <tr>
             <HeaderCell 
-              field="sector" 
-              label="行业板块" 
-              width="w-[100px]" 
+              field="code" 
+              label="代码" 
+              width="w-[90px]" 
               align="left" 
               stickyLeft={0} 
               sortConfig={sortConfig} 
@@ -113,34 +119,57 @@ export const MarketTable: React.FC<MarketTableProps> = ({ data, sortConfig, onSo
               label="项目名称" 
               width="w-[140px]" 
               align="left" 
-              stickyLeft={100} 
+              stickyLeft={90} 
               sortConfig={sortConfig} 
               onSort={onSort} 
             />
-            <HeaderCell field="assetType" label="资产类别" width="w-24" align="center" sortConfig={sortConfig} onSort={onSort} />
+            <HeaderCell 
+              field="sector" 
+              label="行业板块" 
+              width="w-[100px]" 
+              align="left" 
+              stickyLeft={230} 
+              sortConfig={sortConfig} 
+              onSort={onSort} 
+            />
+            <HeaderCell 
+              field="assetType" 
+              label="资产类别" 
+              width="w-[100px]" 
+              align="center" 
+              stickyLeft={330}
+              sortConfig={sortConfig} 
+              onSort={onSort} 
+            />
             <HeaderCell field="currentPrice" label="最新价" width="w-24" sortConfig={sortConfig} onSort={onSort} />
             <HeaderCell field="changePercent" label="涨跌幅" width="w-24" sortConfig={sortConfig} onSort={onSort} />
+            <HeaderCell field="change" label="涨跌额" width="w-24" sortConfig={sortConfig} onSort={onSort} />
             <HeaderCell field="volume" label="成交量(手)" width="w-24" sortConfig={sortConfig} onSort={onSort} />
             <HeaderCell field="amount" label="成交额(千元)" width="w-32" sortConfig={sortConfig} onSort={onSort} />
+            <HeaderCell field="open" label="开盘" width="w-24" sortConfig={sortConfig} onSort={onSort} />
+            <HeaderCell field="high" label="最高" width="w-24" sortConfig={sortConfig} onSort={onSort} />
+            <HeaderCell field="low" label="最低" width="w-24" sortConfig={sortConfig} onSort={onSort} />
           </tr>
         </thead>
         <tbody className="divide-y divide-market-border">
           {sortedData.map((row) => (
             <tr key={row.id} className="hover:bg-market-card/50 transition-colors group">
               {/* Sticky Columns - Matched widths with Header */}
-              <td className="p-3 text-sm font-medium text-market-text sticky left-0 z-10 bg-market-bg group-hover:bg-market-card/50 border-r border-market-border/30 w-[100px] truncate">
-                {row.sector}
+              <td className="p-3 text-sm font-mono text-market-muted sticky left-0 z-10 bg-market-bg group-hover:bg-market-card/50 border-r border-market-border/30 w-[90px] truncate">
+                {row.code}
               </td>
-              <td className="p-3 text-sm font-medium text-blue-400 sticky left-[100px] z-10 bg-market-bg group-hover:bg-market-card/50 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.5)] w-[140px] truncate" title={row.name}>
+              <td className="p-3 text-sm font-medium text-blue-400 sticky left-[90px] z-10 bg-market-bg group-hover:bg-market-card/50 border-r border-market-border/30 w-[140px] truncate" title={row.name}>
                 {row.name}
               </td>
-              
-              <td className="p-3 text-xs text-center text-market-muted">
+              <td className="p-3 text-sm font-medium text-market-text sticky left-[230px] z-10 bg-market-bg group-hover:bg-market-card/50 border-r border-market-border/30 w-[100px] truncate">
+                {row.sector}
+              </td>
+              <td className="p-3 text-xs text-center text-market-muted sticky left-[330px] z-10 bg-market-bg group-hover:bg-market-card/50 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.5)] w-[100px]">
                 <span className={`px-2 py-1 rounded-full ${row.assetType === '产权类' ? 'bg-indigo-900/30 text-indigo-300' : 'bg-amber-900/30 text-amber-300'}`}>
                   {row.assetType}
                 </span>
               </td>
-              
+
               <td className={`p-3 text-sm text-right font-mono font-medium ${getTrendColor(row.changePercent)}`}>
                 {row.currentPrice > 0 ? formatNumber(row.currentPrice) : <span className="text-market-muted">---</span>}
               </td>
@@ -153,12 +182,26 @@ export const MarketTable: React.FC<MarketTableProps> = ({ data, sortConfig, onSo
                  ) : <span className="text-market-muted">---</span>}
               </td>
 
+              <td className={`p-3 text-sm text-right font-mono font-medium ${getTrendColor(row.change)}`}>
+                {row.currentPrice > 0 ? formatNumber(row.change) : '---'}
+              </td>
+
               <td className="p-3 text-sm text-right font-mono text-market-muted">
                 {row.currentPrice > 0 ? formatNumber(row.volume, 0) : '---'}
               </td>
 
               <td className="p-3 text-sm text-right font-mono text-market-text">
                 {row.currentPrice > 0 ? formatNumber(row.amount, 2) : '---'}
+              </td>
+
+              <td className="p-3 text-sm text-right font-mono text-market-text">
+                {row.currentPrice > 0 ? formatNumber(row.open) : '---'}
+              </td>
+              <td className="p-3 text-sm text-right font-mono text-market-text">
+                {row.currentPrice > 0 ? formatNumber(row.high) : '---'}
+              </td>
+              <td className="p-3 text-sm text-right font-mono text-market-text">
+                {row.currentPrice > 0 ? formatNumber(row.low) : '---'}
               </td>
             </tr>
           ))}
