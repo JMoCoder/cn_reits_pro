@@ -1,0 +1,21 @@
+# Netlify Configuration File
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# 1. Tushare API Proxy (必须放在最前面)
+# 将 /tushare_api 的请求转发到 Tushare 官方接口
+# status = 200 表示这是一个“重写/代理”而不是“重定向”
+[[redirects]]
+  from = "/tushare_api"
+  to = "https://api.tushare.pro"
+  status = 200
+  force = true
+
+# 2. SPA Fallback (单页应用路由支持)
+# 任何其他未匹配的路径都返回 index.html，防止刷新页面 404
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
