@@ -1,7 +1,8 @@
 {
-  "name": "cn-reits-pro-|-中国reits数据终端",
+  "name": "cn-reits-pro",
+  "description": "中国REITs数据终端 (CN-REITs Pro)",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
