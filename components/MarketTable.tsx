@@ -6,6 +6,7 @@ interface MarketTableProps {
   data: ReitData[];
   sortConfig: SortConfig;
   onSort: (field: SortField) => void;
+  onRowClick: (code: string) => void;
 }
 
 // Utility for Chinese Market Coloring (Red = Up, Green = Down)
@@ -14,12 +15,6 @@ const getTrendColor = (val: number) => {
   if (val < 0) return 'text-market-green';
   return 'text-market-muted';
 };
-
-const getTrendBg = (val: number) => {
-    if (val > 0.01) return 'bg-market-red/10';
-    if (val < -0.01) return 'bg-market-green/10';
-    return '';
-}
 
 const formatPct = (val: number) => (val * 100).toFixed(2) + '%';
 const formatNumber = (val: number, digits = 3) => val.toFixed(digits);
@@ -70,7 +65,7 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
   );
 };
 
-export const MarketTable: React.FC<MarketTableProps> = ({ data, sortConfig, onSort }) => {
+export const MarketTable: React.FC<MarketTableProps> = ({ data, sortConfig, onSort, onRowClick }) => {
   
   const sortedData = useMemo(() => {
     const sorted = [...data];
@@ -108,7 +103,7 @@ export const MarketTable: React.FC<MarketTableProps> = ({ data, sortConfig, onSo
             <HeaderCell 
               field="code" 
               label="代码" 
-              width="w-[90px]" 
+              width="w-[110px]" 
               align="left" 
               stickyLeft={0} 
               sortConfig={sortConfig} 
@@ -119,7 +114,7 @@ export const MarketTable: React.FC<MarketTableProps> = ({ data, sortConfig, onSo
               label="项目名称" 
               width="w-[140px]" 
               align="left" 
-              stickyLeft={90} 
+              stickyLeft={110} 
               sortConfig={sortConfig} 
               onSort={onSort} 
             />
@@ -128,7 +123,7 @@ export const MarketTable: React.FC<MarketTableProps> = ({ data, sortConfig, onSo
               label="行业板块" 
               width="w-[100px]" 
               align="left" 
-              stickyLeft={230} 
+              stickyLeft={250} 
               sortConfig={sortConfig} 
               onSort={onSort} 
             />
@@ -137,7 +132,7 @@ export const MarketTable: React.FC<MarketTableProps> = ({ data, sortConfig, onSo
               label="资产类别" 
               width="w-[100px]" 
               align="center" 
-              stickyLeft={330}
+              stickyLeft={350}
               sortConfig={sortConfig} 
               onSort={onSort} 
             />
@@ -155,16 +150,29 @@ export const MarketTable: React.FC<MarketTableProps> = ({ data, sortConfig, onSo
           {sortedData.map((row) => (
             <tr key={row.id} className="hover:bg-market-card/50 transition-colors group">
               {/* Sticky Columns - Matched widths with Header */}
-              <td className="p-3 text-sm font-mono text-market-muted sticky left-0 z-10 bg-market-bg group-hover:bg-market-card/50 border-r border-market-border/30 w-[90px] truncate">
+              <td 
+                className="p-3 text-sm font-mono text-market-muted sticky left-0 z-10 bg-market-bg group-hover:bg-market-card/50 border-r border-market-border/30 w-[110px] truncate cursor-pointer hover:text-blue-400"
+                onClick={() => onRowClick(row.ts_code)}
+              >
                 {row.code}
               </td>
-              <td className="p-3 text-sm font-medium text-blue-400 sticky left-[90px] z-10 bg-market-bg group-hover:bg-market-card/50 border-r border-market-border/30 w-[140px] truncate" title={row.name}>
+              <td 
+                className="p-3 text-sm font-medium text-blue-400 sticky left-[110px] z-10 bg-market-bg group-hover:bg-market-card/50 border-r border-market-border/30 w-[140px] truncate cursor-pointer hover:text-blue-300" 
+                title={row.name}
+                onClick={() => onRowClick(row.ts_code)}
+              >
                 {row.name}
               </td>
-              <td className="p-3 text-sm font-medium text-market-text sticky left-[230px] z-10 bg-market-bg group-hover:bg-market-card/50 border-r border-market-border/30 w-[100px] truncate">
+              <td 
+                className="p-3 text-sm font-medium text-market-text sticky left-[250px] z-10 bg-market-bg group-hover:bg-market-card/50 border-r border-market-border/30 w-[100px] truncate cursor-pointer"
+                onClick={() => onRowClick(row.ts_code)}
+              >
                 {row.sector}
               </td>
-              <td className="p-3 text-xs text-center text-market-muted sticky left-[330px] z-10 bg-market-bg group-hover:bg-market-card/50 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.5)] w-[100px]">
+              <td 
+                className="p-3 text-xs text-center text-market-muted sticky left-[350px] z-10 bg-market-bg group-hover:bg-market-card/50 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.5)] w-[100px] cursor-pointer"
+                onClick={() => onRowClick(row.ts_code)}
+              >
                 <span className={`px-2 py-1 rounded-full ${row.assetType === '产权类' ? 'bg-indigo-900/30 text-indigo-300' : 'bg-amber-900/30 text-amber-300'}`}>
                   {row.assetType}
                 </span>
@@ -174,7 +182,7 @@ export const MarketTable: React.FC<MarketTableProps> = ({ data, sortConfig, onSo
                 {row.currentPrice > 0 ? formatNumber(row.currentPrice) : <span className="text-market-muted">---</span>}
               </td>
               
-              <td className={`p-3 text-sm text-right font-mono font-bold ${getTrendBg(row.changePercent)}`}>
+              <td className="p-3 text-sm text-right font-mono font-bold">
                  {row.currentPrice > 0 ? (
                     <span className={getTrendColor(row.changePercent)}>
                       {row.changePercent > 0 ? '+' : ''}{formatPct(row.changePercent)}

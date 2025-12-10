@@ -1,4 +1,4 @@
-import { TushareResponse, TushareFundBasic, TushareDailyQuote } from '../types';
+import { TushareResponse, TushareFundBasic, TushareDailyQuote, TushareFundManager, TushareFundNav, TushareFundDiv } from '../types';
 
 // Always use proxy to avoid CORS in browser environment
 // Requires server-side proxy configuration (Vite 'server.proxy' or Nginx)
@@ -65,6 +65,7 @@ async function queryTushare<T>(api_name: string, params: Record<string, any> = {
 
 // 1. Get the latest trading date (Market Open)
 export const getLatestTradingDate = async (): Promise<string> => {
+
   const today = new Date();
   const dateStr = today.toISOString().split('T')[0].replace(/-/g, ''); // YYYYMMDD
   
@@ -295,4 +296,30 @@ export const getRealMarketData = async () => {
     }
     throw e; // Re-throw to trigger fallback in dataService
   }
+};
+
+// 4. Fetch Fund Manager Info
+export const fetchFundManager = async (ts_code: string): Promise<TushareFundManager[]> => {
+  return await queryTushare<TushareFundManager>('fund_manager', { ts_code });
+};
+
+// 5. Fetch Fund NAV
+export const fetchFundNav = async (ts_code: string): Promise<TushareFundNav[]> => {
+  // Get latest 30 NAV points
+  return await queryTushare<TushareFundNav>('fund_nav', { 
+    ts_code,
+    limit: 30
+  });
+};
+
+// 6. Fetch Fund Dividend
+export const fetchFundDiv = async (ts_code: string): Promise<TushareFundDiv[]> => {
+  return await queryTushare<TushareFundDiv>('fund_div', { ts_code });
+};
+
+// 7. Fetch Full Fund Basic Info (Single)
+export const fetchFundBasicInfo = async (ts_code: string): Promise<TushareFundBasic | null> => {
+  // Remove market: 'E' to be safer for single code lookup, rely on ts_code uniqueness
+  const result = await queryTushare<TushareFundBasic>('fund_basic', { ts_code });
+  return result.length > 0 ? result[0] : null;
 };

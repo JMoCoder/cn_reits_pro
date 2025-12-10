@@ -1,5 +1,5 @@
-import { ReitData, AssetType, TushareDailyQuote } from '../types';
-import { getLatestTradingDate, fetchREITsList, fetchDailyQuotes } from './tushare';
+import { ReitData, AssetType, TushareDailyQuote, ReitDetail } from '../types';
+import { getLatestTradingDate, fetchREITsList, fetchDailyQuotes, fetchFundBasicInfo, fetchFundManager, fetchFundNav, fetchFundDiv } from './tushare';
 import reitMeta from './reit_meta.json';
 
 // --- HELPERS ---
@@ -121,7 +121,8 @@ export const loadReitList = async (): Promise<ReitData[]> => {
 
       return {
         id: index + 1,
-        code: fund.ts_code.split('.')[0], 
+        code: fund.ts_code, // Display full code
+        ts_code: fund.ts_code,
         name: fund.name,
         sector,
         assetType,
@@ -167,16 +168,8 @@ export const loadReitPrices = async (currentData: ReitData[]): Promise<{data: Re
     const tradeDate = await getLatestTradingDate();
     
     // B. Get Quotes
-    // Reconstruct ts_codes from currentData
-    // Note: currentData.code is stripped (e.g. 508001), we need to append suffix. 
-    // Wait, getRealMarketData used reits list which has ts_code.
-    // We should probably pass the full ts_codes or reconstruct them.
-    // Tushare needs suffix. Let's guess suffix based on code?
-    // 508xxx -> .SH, 180xxx -> .SZ
-    const codes = currentData.map(item => {
-        if (item.code.startsWith('508')) return `${item.code}.SH`;
-        return `${item.code}.SZ`;
-    });
+    // Use ts_code directly as it contains the full code with suffix (e.g., 508001.SH)
+    const codes = currentData.map(item => item.ts_code);
 
     let quotes = await fetchDailyQuotes(codes, tradeDate);
 
@@ -215,8 +208,8 @@ export const loadReitPrices = async (currentData: ReitData[]): Promise<{data: Re
     });
 
     const updatedData = currentData.map(item => {
-      const tsCode = item.code.startsWith('508') ? `${item.code}.SH` : `${item.code}.SZ`;
-      const quote = quoteMap.get(tsCode);
+      // item.ts_code is already the full code (e.g., 508001.SH)
+      const quote = quoteMap.get(item.ts_code);
 
       if (!quote) return item; // Keep existing if no quote
 
@@ -240,5 +233,43 @@ export const loadReitPrices = async (currentData: ReitData[]): Promise<{data: Re
     console.error("Failed to load prices:", error);
     // Don't throw, just return current data so list stays visible
     return { data: currentData, date: '' };
+  }
+};
+
+export const getReitDetail = async (code: string): Promise<ReitDetail> => {
+  try {
+    // 1. Fetch Basic Info (Critical)
+    const base = await fetchFundBasicInfo(code);
+
+    if (!base) {
+      throw new Error(`Fund info not found for ${code}`);
+    }
+
+    // 2. Fetch Supplementary Data (Non-Critical, Parallel)
+    // We catch errors individually so one failure doesn't block the whole modal
+    const [managers, nav, dividend] = await Promise.all([
+      fetchFundManager(code).catch(e => {
+        console.warn(`Failed to fetch managers for ${code}`, e);
+        return [];
+      }),
+      fetchFundNav(code).catch(e => {
+        console.warn(`Failed to fetch NAV for ${code}`, e);
+        return [];
+      }),
+      fetchFundDiv(code).catch(e => {
+        console.warn(`Failed to fetch dividends for ${code}`, e);
+        return [];
+      })
+    ]);
+
+    return {
+      base,
+      managers,
+      nav,
+      dividend
+    };
+  } catch (error) {
+    console.error("Failed to fetch REIT detail:", error);
+    throw error;
   }
 };

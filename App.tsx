@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Activity, Search, ListFilter, Clock, RefreshCw, AlertCircle, WifiOff } from 'lucide-react';
-import { loadMarketData } from './services/dataService';
+import { loadMarketData, getReitDetail } from './services/dataService';
 import { MarketTable } from './components/MarketTable';
-import { ReitData, SortConfig, SortField } from './types';
+import ReitDetailModal from './components/ReitDetailModal';
+import { ReitData, SortConfig, SortField, ReitDetail } from './types';
 
 function App() {
   const [data, setData] = useState<ReitData[]>([]);
@@ -17,6 +18,12 @@ function App() {
   const [marketDate, setMarketDate] = useState<string>('');
   const [isFallback, setIsFallback] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string>('');
+
+  // Modal State
+  const [selectedReit, setSelectedReit] = useState<ReitDetail | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalLoading, setModalLoading] = useState(false);
+  const [modalError, setModalError] = useState<string | null>(null);
 
   // Initial Data Load
   const fetchData = async () => {
@@ -84,6 +91,24 @@ function App() {
   const formatDate = (dateStr: string) => {
     if (!dateStr || dateStr.length !== 8) return '---';
     return `${dateStr.substring(0,4)}-${dateStr.substring(4,6)}-${dateStr.substring(6,8)}`;
+  };
+
+  const handleRowClick = async (code: string) => {
+    setIsModalOpen(true);
+    setModalLoading(true);
+    setModalError(null);
+    setSelectedReit(null);
+    
+    try {
+      const detail = await getReitDetail(code);
+      setSelectedReit(detail);
+    } catch (err: any) {
+      const msg = err.message || 'Failed to load details';
+      setModalError(msg);
+      console.error(err);
+    } finally {
+      setModalLoading(false);
+    }
   };
 
   return (
@@ -177,6 +202,7 @@ function App() {
                 data={filteredData} 
                 sortConfig={sortConfig}
                 onSort={handleSort}
+                onRowClick={handleRowClick}
               />
               <div className="flex-none mt-2 flex justify-between items-center text-[10px] text-market-muted uppercase tracking-wider">
                  <div className="flex items-center gap-2">
@@ -193,6 +219,14 @@ function App() {
         </div>
 
       </main>
+
+      <ReitDetailModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        data={selectedReit}
+        loading={modalLoading}
+        error={modalError}
+      />
     </div>
   );
 }
