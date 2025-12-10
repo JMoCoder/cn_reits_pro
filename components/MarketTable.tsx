@@ -136,7 +136,7 @@ export const MarketTable: React.FC<MarketTableProps> = ({ data, sortConfig, onSo
               sortConfig={sortConfig} 
               onSort={onSort} 
             />
-            <HeaderCell field="currentPrice" label="最新价" width="w-24" sortConfig={sortConfig} onSort={onSort} />
+            <HeaderCell field="currentPrice" label="最新收盘价" width="w-24" sortConfig={sortConfig} onSort={onSort} />
             <HeaderCell field="changePercent" label="涨跌幅" width="w-24" sortConfig={sortConfig} onSort={onSort} />
             <HeaderCell field="change" label="涨跌额" width="w-24" sortConfig={sortConfig} onSort={onSort} />
             <HeaderCell field="volume" label="成交量(手)" width="w-24" sortConfig={sortConfig} onSort={onSort} />
