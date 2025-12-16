@@ -111,6 +111,39 @@ function App() {
     }
   };
 
+  const exportToCSV = () => {
+    if (filteredData.length === 0) return;
+
+    const headers = ['Code', 'Name', 'Sector', 'Asset Type', 'Price', 'Change(%)', 'Change', 'Volume', 'Amount'];
+    
+    // Add BOM for Excel UTF-8 compatibility
+    let csvContent = '\uFEFF' + headers.join(',') + '\n';
+
+    filteredData.forEach(row => {
+      const rowData = [
+        `"${row.ts_code}"`, // Force string for code to prevent Excel scientific notation if possible, though CSV is text
+        `"${row.name}"`,
+        `"${row.sector}"`,
+        `"${row.assetType}"`,
+        row.currentPrice,
+        `"${(row.changePercent * 100).toFixed(2)}%"`,
+        row.change,
+        row.volume,
+        row.amount
+      ];
+      csvContent += rowData.join(',') + '\n';
+    });
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `cn_reits_export_${new Date().toISOString().slice(0, 10).replace(/-/g, '')}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="flex flex-col h-screen max-h-screen bg-market-bg text-market-text font-sans selection:bg-indigo-500/30">
       {/* Header */}
@@ -210,6 +243,13 @@ function App() {
                    {isFallback ? 'Offline Mode' : 'Tushare Pro Connection Active'}
                  </div>
                  <div className="flex gap-4">
+                   <button 
+                     onClick={exportToCSV}
+                     className="hover:text-market-text transition-colors cursor-pointer"
+                     title="Export data to CSV"
+                   >
+                     Export CSV
+                   </button>
                    <span>Total Listed: {data.length}</span>
                    <span>CNY Currency</span>
                  </div>
