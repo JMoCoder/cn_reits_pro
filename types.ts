@@ -23,6 +23,10 @@ export interface ReitData {
   // Volume/Turnover
   volume: number; // Volume (Hands)
   amount: number; // Amount (1000 CNY)
+  
+  // Derived Metrics
+  intradayDrawdown?: number; // (High - Low) / High
+  turnoverChange?: number; // (Curr Amount - Prev Amount) / Prev Amount
 }
 
 export type SortField = keyof ReitData;

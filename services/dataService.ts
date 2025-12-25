@@ -1,5 +1,6 @@
 import { ReitData, AssetType, TushareDailyQuote, ReitDetail } from '../types';
 import { getLatestTradingDate, fetchREITsList, fetchDailyQuotes, fetchFundBasicInfo, fetchFundManager, fetchFundNav, fetchFundDiv } from './tushare';
+import { calculateIntradayDrawdown, calculateTurnoverChange } from '../utils/calculations';
 import reitMeta from './reit_meta.json';
 
 // --- HELPERS ---
@@ -192,38 +193,57 @@ export const loadReitPrices = async (currentData: ReitData[]): Promise<{data: Re
         console.log("Debug Codes sent:", codes.slice(0, 3));
     }
 
-    // Create a Map for O(1) quote lookup
-    const quoteMap = new Map<string, TushareDailyQuote>();
-    // Since we fetch a range (last 5 days), we might get multiple quotes per code.
-    // We want the LATEST one.
+    // Create a Map for O(1) quote lookup (Current and Previous)
+    const quoteMap = new Map<string, { current: TushareDailyQuote, prev?: TushareDailyQuote }>();
+    
     // Sort quotes by date descending first.
     quotes.sort((a, b) => b.trade_date.localeCompare(a.trade_date));
     
+    // Group quotes by code
+    const quotesByCode = new Map<string, TushareDailyQuote[]>();
     quotes.forEach(q => {
-        // Since we sorted descending, the first time we see a code, it's the latest date.
-        // Map.set overwrites, so we should only set if NOT exists.
-        if (!quoteMap.has(q.ts_code)) {
-            quoteMap.set(q.ts_code, q);
+        if (!quotesByCode.has(q.ts_code)) {
+            quotesByCode.set(q.ts_code, []);
+        }
+        quotesByCode.get(q.ts_code)!.push(q);
+    });
+
+    // Populate the main map with current and previous
+    quotesByCode.forEach((list, code) => {
+        // List is already sorted descending because we iterated the sorted `quotes` array
+        if (list.length > 0) {
+            quoteMap.set(code, {
+                current: list[0],
+                prev: list.length > 1 ? list[1] : undefined
+            });
         }
     });
 
     const updatedData = currentData.map(item => {
       // item.ts_code is already the full code (e.g., 508001.SH)
-      const quote = quoteMap.get(item.ts_code);
+      const quoteData = quoteMap.get(item.ts_code);
 
-      if (!quote) return item; // Keep existing if no quote
+      if (!quoteData) return item; // Keep existing if no quote
+
+      const { current, prev } = quoteData;
+      
+      // Calculate derived metrics
+      const intradayDrawdown = calculateIntradayDrawdown(current.high, current.low);
+      const turnoverChange = prev ? calculateTurnoverChange(current.amount, prev.amount) : 0;
 
       return {
         ...item,
-        prevClose: quote.pre_close,
-        open: quote.open,
-        high: quote.high,
-        low: quote.low,
-        currentPrice: quote.close,
-        change: quote.change,
-        changePercent: quote.pct_chg / 100,
-        volume: quote.vol,
-        amount: quote.amount
+        prevClose: current.pre_close,
+        open: current.open,
+        high: current.high,
+        low: current.low,
+        currentPrice: current.close,
+        change: current.change,
+        changePercent: current.pct_chg / 100,
+        volume: current.vol,
+        amount: current.amount,
+        intradayDrawdown,
+        turnoverChange
       };
     });
 

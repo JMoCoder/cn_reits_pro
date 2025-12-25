@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { ReitData, SortConfig, SortField } from '../types';
-import { ArrowUp, ArrowDown, ChevronsUpDown } from 'lucide-react';
+import { ArrowUp, ArrowDown, ChevronsUpDown, HelpCircle } from 'lucide-react';
 
 interface MarketTableProps {
   data: ReitData[];
@@ -27,6 +27,7 @@ interface HeaderCellProps {
   stickyLeft?: number;
   sortConfig: SortConfig;
   onSort: (field: SortField) => void;
+  tooltip?: string;
 }
 
 const HeaderCell: React.FC<HeaderCellProps> = ({ 
@@ -36,7 +37,8 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
   align = 'right', 
   stickyLeft, 
   sortConfig, 
-  onSort 
+  onSort,
+  tooltip
 }) => {
   const renderSortIcon = () => {
     if (sortConfig.field !== field) return <ChevronsUpDown size={14} className="opacity-30" />;
@@ -59,6 +61,11 @@ const HeaderCell: React.FC<HeaderCellProps> = ({
     >
       <div className={`flex items-center gap-1 ${align === 'right' ? 'justify-end' : align === 'center' ? 'justify-center' : 'justify-start'}`}>
         {label}
+        {tooltip && (
+          <div className="group relative" title={tooltip}>
+             <HelpCircle size={12} className="text-market-muted hover:text-market-text" />
+          </div>
+        )}
         {field !== 'id' && renderSortIcon()}
       </div>
     </th>
@@ -139,6 +146,22 @@ export const MarketTable: React.FC<MarketTableProps> = ({ data, sortConfig, onSo
             <HeaderCell field="currentPrice" label="最新收盘价" width="w-24" sortConfig={sortConfig} onSort={onSort} />
             <HeaderCell field="changePercent" label="涨跌幅" width="w-24" sortConfig={sortConfig} onSort={onSort} />
             <HeaderCell field="change" label="涨跌额" width="w-24" sortConfig={sortConfig} onSort={onSort} />
+            <HeaderCell 
+              field="intradayDrawdown" 
+              label="当日回撤" 
+              width="w-28" 
+              sortConfig={sortConfig} 
+              onSort={onSort} 
+              tooltip="计算公式: (当日最高价 - 当日最低价) / 当日最高价 * 100%"
+            />
+            <HeaderCell 
+              field="turnoverChange" 
+              label="成交额变化" 
+              width="w-28" 
+              sortConfig={sortConfig} 
+              onSort={onSort} 
+              tooltip="计算公式: (当日成交额 - 昨日成交额) / 昨日成交额 * 100%"
+            />
             <HeaderCell field="volume" label="成交量(手)" width="w-24" sortConfig={sortConfig} onSort={onSort} />
             <HeaderCell field="amount" label="成交额(千元)" width="w-32" sortConfig={sortConfig} onSort={onSort} />
             <HeaderCell field="open" label="开盘" width="w-24" sortConfig={sortConfig} onSort={onSort} />
@@ -192,6 +215,18 @@ export const MarketTable: React.FC<MarketTableProps> = ({ data, sortConfig, onSo
 
               <td className={`p-3 text-sm text-right font-mono font-medium ${getTrendColor(row.change)}`}>
                 {row.currentPrice > 0 ? formatNumber(row.change) : '---'}
+              </td>
+
+              <td className="p-3 text-sm text-right font-mono font-medium text-market-text">
+                {row.currentPrice > 0 && row.intradayDrawdown !== undefined ? formatPct(row.intradayDrawdown) : '---'}
+              </td>
+
+              <td className={`p-3 text-sm text-right font-mono font-medium ${getTrendColor(row.turnoverChange || 0)}`}>
+                 {row.currentPrice > 0 && row.turnoverChange !== undefined ? (
+                    <span>
+                      {row.turnoverChange > 0 ? '+' : ''}{formatPct(row.turnoverChange)}
+                    </span>
+                 ) : '---'}
               </td>
 
               <td className="p-3 text-sm text-right font-mono text-market-muted">
