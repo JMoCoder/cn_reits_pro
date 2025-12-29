@@ -1,28 +1,21 @@
-COPYRIGHT & LICENSE AGREEMENT
+MIT License
 
-Copyright © [2025] [上海颀阔智能科技有限公司]. All Rights Reserved.
+Copyright (c) 2025 CN-REITs Dashboard
 
-1. OWNERSHIP 
-   The content, designs, financial models, and data contained in this repository are the exclusive property of [上海颀阔智能科技有限公司].
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-2. AUTHORIZED USE
-   Access to this repository is granted STRICTLY for internal viewing by authorized personnel or designated partners of [上海颀阔智能科技有限公司] only. 
-   
-   You may:
-   - Read and view the content online within this repository.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-3. RESTRICTIONS 
-   You are STRICTLY PROHIBITED from:
-   
-   - Copying, downloading, or ensuring local storage of any part of this content without express written permission.
-   - Distributing, transmitting, or sharing the content with any third party.
-   - Modifying, adapting, reverse engineering, or creating derivative works based on this content.
-   - Using this content for any public commercial purpose.
-   
-4. CONFIDENTIALITY 
-   This content contains confidential and proprietary information. Unauthorized disclosure is a violation of this agreement and applicable laws.
-
-5. NO WARRANTY 
-   This content is provided "AS IS" without warranty of any kind. [上海颀阔智能科技有限公司] disclaims all warranties regarding the accuracy or completeness of the financial data provided herein.
-
-VIOLATION OF THESE TERMS MAY RESULT IN LEGAL ACTION.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
