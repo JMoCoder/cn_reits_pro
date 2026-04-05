@@ -2,7 +2,7 @@
 // import fetch from 'node-fetch'; // Native fetch in Node 18+
 
 const API_URL = 'https://api.tushare.pro';
-const TUSHARE_TOKEN = '05a92403c3c2178fedbe68494724e9336f80869fd1875f4354920958';
+const TUSHARE_TOKEN = 'YOUR_TUSHARE_TOKEN';
 
 async function queryTushare(api_name, params = {}) {
   try {

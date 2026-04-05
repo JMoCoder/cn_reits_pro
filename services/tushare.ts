@@ -3,7 +3,7 @@ import { TushareResponse, TushareFundBasic, TushareDailyQuote, TushareFundManage
 // Always use proxy to avoid CORS in browser environment
 // Requires server-side proxy configuration (Vite 'server.proxy' or Nginx)
 const API_URL = '/tushare_api';
-const TUSHARE_TOKEN = '05a92403c3c2178fedbe68494724e9336f80869fd1875f4354920958';
+const TUSHARE_TOKEN = 'YOUR_TUSHARE_TOKEN';
 
 // Generic Tushare Request Handler
 async function queryTushare<T>(api_name: string, params: Record<string, any> = {}): Promise<T[]> {
